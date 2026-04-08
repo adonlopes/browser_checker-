@@ -3,9 +3,13 @@ import numpy as np
 from PIL import Image, ImageChops, ImageFilter, ImageEnhance
 from typing import Dict
 
-RESULTS_DIR = "results"
-SCREENSHOTS_DIR = "screenshots"
+IS_VERCEL = os.environ.get("VERCEL") == "1"
+BASE_DIR = "/tmp" if IS_VERCEL else "."
+
+RESULTS_DIR = os.path.join(BASE_DIR, "results")
+SCREENSHOTS_DIR = os.path.join(BASE_DIR, "screenshots")
 os.makedirs(RESULTS_DIR, exist_ok=True)
+os.makedirs(SCREENSHOTS_DIR, exist_ok=True)
 
 DIFF_THRESHOLD_PASS = 2.0     # % of pixels different → PASS
 DIFF_THRESHOLD_WARN = 8.0     # % of pixels different → WARN (PASS with note)
@@ -14,7 +18,7 @@ DIFF_THRESHOLD_WARN = 8.0     # % of pixels different → WARN (PASS with note)
 
 def load_image(path: str) -> Image.Image:
     """Load image from relative screenshot path."""
-    local = path.lstrip("/")
+    local = os.path.join(BASE_DIR, path.lstrip("/"))
     return Image.open(local).convert("RGB")
 
 

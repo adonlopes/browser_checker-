@@ -3,7 +3,10 @@ import asyncio
 from typing import List, Dict, Optional
 from playwright.async_api import async_playwright
 
-SCREENSHOTS_DIR = "screenshots"
+IS_VERCEL = os.environ.get("VERCEL") == "1"
+BASE_DIR = "/tmp" if IS_VERCEL else "."
+
+SCREENSHOTS_DIR = os.path.join(BASE_DIR, "screenshots")
 os.makedirs(SCREENSHOTS_DIR, exist_ok=True)
 
 

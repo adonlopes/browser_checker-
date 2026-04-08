@@ -20,12 +20,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Static file serving for screenshots/results
-os.makedirs("screenshots", exist_ok=True)
-os.makedirs("results", exist_ok=True)
+# Check if running on Vercel
+IS_VERCEL = os.environ.get("VERCEL") == "1"
+BASE_DIR = "/tmp" if IS_VERCEL else "."
 
-app.mount("/screenshots", StaticFiles(directory="screenshots"), name="screenshots")
-app.mount("/results", StaticFiles(directory="results"), name="results")
+SCREENSHOTS_DIR = os.path.join(BASE_DIR, "screenshots")
+RESULTS_DIR = os.path.join(BASE_DIR, "results")
+
+# Static file serving for screenshots/results
+os.makedirs(SCREENSHOTS_DIR, exist_ok=True)
+os.makedirs(RESULTS_DIR, exist_ok=True)
+
+app.mount("/screenshots", StaticFiles(directory=SCREENSHOTS_DIR), name="screenshots")
+app.mount("/results", StaticFiles(directory=RESULTS_DIR), name="results")
 
 app.include_router(test_router, prefix="/api")
 
