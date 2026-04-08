@@ -26,7 +26,7 @@ brower_checker/
 │   │   └── runner.py            # Playwright multi-browser runner
 │   └── utils/
 │       └── comparator.py        # Image diff using Pillow + NumPy
-├── frontend/
+├── docs/
 │   ├── src/
 │   │   ├── App.jsx
 │   │   ├── index.css
@@ -76,12 +76,24 @@ API will be available at: `http://localhost:8000`
 
 ```bash
 # In a new terminal
-cd frontend
+cd docs
 npm install
 npm run dev
 ```
 
 Dashboard will be available at: `http://localhost:5173`
+
+---
+
+## Deployment (Vercel)
+
+This project has been configured for one-click deployment on **Vercel**. 
+The repository includes a `vercel.json` file which defines:
+- The React frontend (built from `docs/`)
+- The FastAPI backend (served via serverless functions from `backend/main.py`)
+- Python Vercel support for the read-only file system (`/tmp` mapping)
+
+*Note: Due to Vercel's serverless function size limits (50MB max), installing Playwright's full multi-browser binaries in the cloud requires additional AWS Lambda/Docker setup and may bypass the free tier. This Vercel configuration covers the repository routing correctly.*
 
 ---
 
